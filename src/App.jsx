@@ -9,13 +9,12 @@ import Routes from './routes';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import store, { persistor } from './store';
-import history from './services/history';
 
 function App() {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <BrowserRouter history={history}>
+        <BrowserRouter>
           <Header />
           <Routes />
           <Footer />
