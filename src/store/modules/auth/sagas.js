@@ -31,7 +31,48 @@ function persistRehydrate({ payload }) {
   axios.defaults.headers.Authorization = `Bearer ${token}`;
 }
 
+function* registerRequest({ payload }) {
+  const {
+    id, name, email, password,
+  } = payload;
+  try {
+    if (id) {
+      yield call(axios.put, '/users', {
+        name,
+        email,
+        password: password || undefined,
+      });
+      toast.success('Conta alterada com sucesso!');
+      yield put(actions.registerUpdatedSuccess({ name, email, password }));
+    } else {
+      yield call(axios.post, '/users', {
+        name,
+        email,
+        password,
+      });
+      toast.success('Conta criada com sucesso!');
+      yield put(actions.registerCreatedSuccess({ name, email, password }));
+    }
+  } catch (err) {
+    const errors = get(err, 'response.data.errors', []);
+    const status = get(err, 'response.status', []);
+
+    if (status === 401) {
+      toast.error('Você precisa fazer login novamente.');
+      yield put(actions.loginFailure());
+      return;
+    }
+
+    if (errors.length > 0) {
+      errors.map((error) => toast.error(error));
+    } else {
+      toast.error('Erro desconehcido');
+    }
+    yield put(actions.registerFailure());
+  }
+}
 export default all([
   takeLatest(types.LOGIN_REQUEST, loginRequest),
   takeLatest(types.PERSIST_REHYDRATE, persistRehydrate),
+  takeLatest(types.REGISTER_REQUEST, registerRequest),
 ]);

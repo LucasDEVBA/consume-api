@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { isEmail } from 'validator';
 import { useDispatch } from 'react-redux';
-import { get } from 'lodash';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { Container } from '../../styles/GlobalStyles';
 import { Form } from './styled';
@@ -11,15 +11,13 @@ import * as actions from '../../store/modules/auth/actions';
 
 export default function Login(props) {
   const dispatch = useDispatch();
-
-  const prevPath = get(props, 'location.state.prevPath', '/');
-
+  const history = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     let formErrors = false;
 
     if (!isEmail(email)) {
@@ -33,7 +31,10 @@ export default function Login(props) {
 
     if (formErrors) return;
 
-    dispatch(actions.loginRequest({ email, password, prevPath }));
+    dispatch(actions.loginRequest({ email, password }));
+    if (location.pathname === '/login') {
+      history('/');
+    }
   };
   return (
     <Container>
