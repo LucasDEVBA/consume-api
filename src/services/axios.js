@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export default axios.create({
-  baseURL: 'https://api-rest-s33m.onrender.com/',
+  baseURL: 'https://api-rest-xw3z.onrender.com/',
 });
