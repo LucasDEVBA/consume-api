@@ -29,7 +29,6 @@ export default function Student() {
         const { data } = await axios.get(`/students/${id}`);
         const File = get(data, 'Files[0].url', '');
         setFile(File);
-        console.log(data);
         setName(data.name);
         // setLastName(data.lastname);
         setEmail(data.email);
