@@ -18,7 +18,7 @@ export default function Router() {
       <Route path="/student/:id/edit" element={isLoggedIn ? <Student /> : <Login />} />
       <Route path="/student/" element={<Student />} />
       <Route path="/files/:id" element={isLoggedIn ? <Files /> : <Login />} />
-      <Route path="/register/" element={isLoggedIn ? <Register /> : <Login />} />
+      <Route path="/register/" element={<Register />} />
       <Route path="/login/" element={<Login />} />
       <Route path="*" element={<Page404 />} />
     </Routes>
